@@ -1,4 +1,4 @@
-PRODUCT_BRAND ?= PixelExperience
+PRODUCT_BRAND ?= PixelExtended
 
 PRODUCT_BUILD_PROP_OVERRIDES += BUILD_UTC_DATE=0
 
@@ -47,6 +47,11 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.ota.allow_downgrade=true
 endif
 
+#HAXX for ROOT Detetction
+PRODUCT_PROPERTY_OVERRIDES += \
+     ro.build.tags=release-keys
+     ro.odm.build.tags=release-keys
+
 # Some permissions
 PRODUCT_COPY_FILES += \
     vendor/aosp/config/permissions/backup.xml:system/etc/sysconfig/backup.xml \
@@ -76,11 +81,6 @@ PRODUCT_COPY_FILES += \
 # Enforce privapp-permissions whitelist
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     ro.control_privapp_permissions=enforce
-    
-#HAXX for ROOT Detetction
-PRODUCT_PROPERTY_OVERRIDES += \
-     ro.build.tags=release-keys
-     ro.odm.build.tags=release-keys
 
 # Power whitelist
 PRODUCT_COPY_FILES += \
@@ -175,6 +175,7 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_PACKAGES += \
      MiXplorer \
      Gallery
+
 # Branding
 include vendor/aosp/config/branding.mk
 
