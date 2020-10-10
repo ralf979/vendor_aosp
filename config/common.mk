@@ -12,15 +12,30 @@ endif
 
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     dalvik.vm.debug.alloc=0 \
-    ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
-    ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html \
+    keyguard.no_require_sim=true \
+    media.recorder.show_manufacturer_and_model=true \
+    net.tethering.noprovisioning=true \
+    persist.sys.disable_rescue=true \
+    ro.atrace.core.services=com.google.android.gms,com.google.android.gms.ui,com.google.android.gms.persistent \
+    ro.carrier=unknown \
+    ro.com.android.dataroaming=false \
+    ro.com.android.dateformat=MM-dd-yyyy \
+    ro.config.bt_sco_vol_steps=30 \
+    ro.config.media_vol_steps=30 \
     ro.error.receiver.system.apps=com.google.android.gms \
     ro.setupwizard.enterprise_mode=1 \
-    ro.com.android.dataroaming=false \
-    ro.atrace.core.services=com.google.android.gms,com.google.android.gms.ui,com.google.android.gms.persistent \
-    ro.com.android.dateformat=MM-dd-yyyy \
-    persist.sys.disable_rescue=true \
-    ro.setupwizard.rotation_locked=true
+    ro.storage_manager.enabled=true \
+    ro.com.google.ime.bs_theme=true \
+    ro.com.google.ime.theme_id=5 \
+    ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html \
+    ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html
+
+# Enable updating of APEXes
+$(call inherit-product, $(SRC_TARGET_DIR)/product/updatable_apex.mk)
+
+# aospFest-specific component overrides
+PRODUCT_COPY_FILES += \
+    vendor/aosp/config/component-overrides.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/sysconfig/component-overrides.xml
 
 # Enable ADB authentication
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += ro.adb.secure=0
@@ -110,8 +125,8 @@ PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
 PRODUCT_SYSTEM_DEFAULT_PROPERTIES += \
     media.recorder.show_manufacturer_and_model=true
 
-PRODUCT_ENFORCE_RRO_EXCLUDED_OVERLAYS += vendor/aosp/overlay
-DEVICE_PACKAGE_OVERLAYS += vendor/aosp/overlay/common
+DEVICE_PACKAGE_OVERLAYS += vendor/aosp/overlay
+PRODUCT_ENFORCE_RRO_TARGETS := *
 
 # Dex preopt
 PRODUCT_DEXPREOPT_SPEED_APPS += \
@@ -135,8 +150,20 @@ include vendor/aosp/config/branding.mk
 # Inherit from GMS product config
 $(call inherit-product, vendor/gms/gms_full.mk)
 
+# Inherit from apex config
+$(call inherit-product, vendor/aosp/config/apex.mk)
+
+# Inherit from audio config
+$(call inherit-product, vendor/aosp/config/audio.mk)
+
+# Inherit from fonts config
+$(call inherit-product, vendor/aosp/config/fonts.mk)
+
+# Inherit from rro_overlays config
+$(call inherit-product, vendor/aosp/config/rro_overlays.mk)
+
 # Pixel Style
-include vendor/pixelstyle/config.mk
+#include vendor/pixelstyle/config.mk
 
 # Customization
 #include vendor/google-customization/config.mk
